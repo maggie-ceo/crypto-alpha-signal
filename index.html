@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Alpha Signal — Institutional-Grade Crypto Signals</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #f0b90b;
+    --gold-dim: #c9960a;
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --green: #0ecb81;
+    --red: #f6465d;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+  a { color: var(--gold); text-decoration: none; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; width: 100%; background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid #222230; z-index: 100; padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-logo { font-size: 1.2rem; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+  .nav-links { display: flex; gap: 2rem; font-size: 0.9rem; color: var(--muted); }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: var(--gold); color: #000; padding: 8px 20px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--gold-dim); color: #000; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 5% 60px; background: radial-gradient(ellipse at 50% 0%, rgba(240,185,11,0.08) 0%, transparent 70%); }
+  .hero-badge { display: inline-block; background: rgba(240,185,11,0.12); border: 1px solid rgba(240,185,11,0.3); color: var(--gold); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 1.5rem; animation: fadeUp 0.6s ease both; }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; animation: fadeUp 0.7s ease both; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--muted); max-width: 600px; margin-bottom: 2.5rem; animation: fadeUp 0.8s ease both; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.9s ease both; }
+  .btn-primary { background: var(--gold); color: #000; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 1rem; transition: all 0.2s; box-shadow: 0 0 24px rgba(240,185,11,0.3); }
+  .btn-primary:hover { background: var(--gold-dim); transform: translateY(-2px); box-shadow: 0 0 36px rgba(240,185,11,0.5); color: #000; }
+  .btn-secondary { background: transparent; color: var(--text); padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 1rem; border: 1px solid #333344; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* STATS */
+  .stats { background: var(--bg2); border-top: 1px solid #1e1e2e; border-bottom: 1px solid #1e1e2e; padding: 28px 5%; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--gold); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* SECTIONS */
+  section { padding: 80px 5%; max-width: 1100px; margin: 0 auto; }
+  .section-tag { color: var(--gold); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+  h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 1rem; }
+  .subtitle { color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .step { background: var(--bg3); border: 1px solid #222230; border-radius: 12px; padding: 2rem; position: relative; transition: border-color 0.2s; }
+  .step:hover { border-color: var(--gold); }
+  .step-num { font-size: 2.5rem; font-weight: 900; color: rgba(240,185,11,0.15); position: absolute; top: 1rem; right: 1.2rem; }
+  .step-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step p { color: var(--muted); font-size: 0.9rem; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .plan { background: var(--bg3); border: 1px solid #222230; border-radius: 16px; padding: 2rem; transition: all 0.2s; position: relative; }
+  .plan:hover { transform: translateY(-4px); }
+  .plan.featured { border-color: var(--gold); box-shadow: 0 0 40px rgba(240,185,11,0.15); }
+  .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; font-size: 0.7rem; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; white-space: nowrap; }
+  .plan-name { font-size: 0.85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+  .plan-price { font-size: 2.5rem; font-weight: 900; color: var(--text); margin-bottom: 0.3rem; }
+  .plan-price span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+  .plan-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li { padding: 6px 0; font-size: 0.9rem; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .plan-features li::before { content: "✓"; color: var(--green); font-weight: 700; }
+  .plan-features li.no::before { content: "✗"; color: var(--red); }
+  .plan-btn { display: block; text-align: center; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; transition: all 0.2s; }
+  .plan-btn.gold { background: var(--gold); color: #000; }
+  .plan-btn.gold:hover { background: var(--gold-dim); color: #000; }
+  .plan-btn.outline { border: 1px solid #333344; color: var(--text); }
+  .plan-btn.outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* SAMPLE SIGNAL */
+  .signal-card { background: var(--bg3); border: 1px solid #222230; border-radius: 16px; padding: 2rem; max-width: 480px; font-family: monospace; font-size: 0.9rem; line-height: 1.8; }
+  .signal-card .sig-header { color: var(--gold); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .sig-long { color: var(--green); font-weight: 700; }
+  .sig-short { color: var(--red); font-weight: 700; }
+  .sig-tp { color: var(--green); }
+  .sig-sl { color: var(--red); }
+  .sig-label { color: var(--muted); }
+  .signal-wrap { display: flex; gap: 3rem; align-items: flex-start; flex-wrap: wrap; }
+  .signal-text { flex: 1; min-width: 260px; }
+  .signal-text h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+  .signal-text p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.6rem; }
+
+  /* METHODOLOGY */
+  .method-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+  .method-card { background: var(--bg3); border: 1px solid #222230; border-radius: 12px; padding: 1.5rem; }
+  .method-card h4 { color: var(--gold); font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .method-card p { color: var(--muted); font-size: 0.85rem; }
+
+  /* PAYMENT */
+  .payment-box { background: var(--bg3); border: 1px solid rgba(240,185,11,0.3); border-radius: 16px; padding: 2.5rem; max-width: 600px; }
+  .payment-box h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+  .wallet-row { display: flex; align-items: center; gap: 0.8rem; background: var(--bg); border: 1px solid #333344; border-radius: 8px; padding: 12px 16px; margin: 1rem 0; }
+  .wallet-addr { font-family: monospace; font-size: 0.8rem; color: var(--gold); flex: 1; word-break: break-all; }
+  .copy-btn { background: var(--gold); color: #000; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .copy-btn:hover { background: var(--gold-dim); }
+  .payment-steps { list-style: none; counter-reset: steps; margin-top: 1rem; }
+  .payment-steps li { counter-increment: steps; padding: 8px 0 8px 2.5rem; position: relative; color: var(--muted); font-size: 0.9rem; border-bottom: 1px solid #1e1e2e; }
+  .payment-steps li::before { content: counter(steps); position: absolute; left: 0; top: 8px; background: var(--gold); color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; }
+
+  /* DISCLAIMER */
+  .disclaimer-box { background: rgba(246,70,93,0.05); border: 1px solid rgba(246,70,93,0.2); border-radius: 12px; padding: 1.5rem; color: var(--muted); font-size: 0.82rem; line-height: 1.7; }
+
+  /* FOOTER */
+  footer { background: var(--bg2); border-top: 1px solid #1e1e2e; padding: 2.5rem 5%; text-align: center; color: var(--muted); font-size: 0.85rem; }
+  footer .footer-logo { color: var(--gold); font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ Crypto Alpha Signal</div>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#payment">Subscribe</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Get Access</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🔥 LIVE SIGNALS — REAL RESULTS</div>
+  <h1>Institutional-Grade<br><span>Crypto Signals.</span><br>Real Results. Zero Noise.</h1>
+  <p>SMC + Quantitative hybrid analysis. Every signal includes Entry Zone, TP1–TP5, Stop-Loss, and Invalidation level. Built for serious traders.</p>
+  <div class="hero-btns">
+    <a href="#" class="btn-primary">📲 Join Free Channel</a>
+    <a href="#pricing" class="btn-secondary">💎 Get Premium Access</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">78%</div><div class="stat-label">Win Rate</div></div>
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Signals Delivered</div></div>
+  <div class="stat"><div class="stat-num">2,000+</div><div class="stat-label">Members</div></div>
+  <div class="stat"><div class="stat-num">3.2R</div><div class="stat-label">Avg Risk/Reward</div></div>
+  <div class="stat"><div class="stat-num">2024</div><div class="stat-label">Est.</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="reveal">
+    <div class="section-tag">Process</div>
+    <h2>How It Works</h2>
+    <p class="subtitle">Three steps from signal to profit. No guesswork, no emotion.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">📡</div>
+        <h3>Receive the Signal</h3>
+        <p>Get real-time alerts on Telegram with full entry zone, TP1–TP5 targets, stop-loss, and invalidation level.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>Set Up Auto-Execution</h3>
+        <p>Connect Cornix bot to your Binance or Bybit account. It reads our signals and executes trades automatically — you stay in control.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">💰</div>
+        <h3>Take Profit</h3>
+        <p>Watch TP levels hit one by one. Partial closes lock in gains automatically. Stop-loss trails to protect your capital.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="reveal">
+    <div class="section-tag">Plans</div>
+    <h2>Choose Your Tier</h2>
+    <p class="subtitle">Start free. Upgrade when you're ready. Cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>/month</span></div>
+        <div class="plan-desc">Get a taste of our signals. No commitment.</div>
+        <ul class="plan-features">
+          <li>1–2 signals per week</li>
+          <li>Public Telegram channel</li>
+          <li class="no">Delayed delivery (2–4h)</li>
+          <li class="no">No TP/SL details</li>
+          <li class="no">No market analysis</li>
+        </ul>
+        <a href="#" class="plan-btn outline">Join Free Channel</a>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-name">Basic</div>
+        <div class="plan-price">$29 <span>/month</span></div>
+        <div class="plan-desc">Full signals in real-time. Everything you need to trade.</div>
+        <ul class="plan-features">
+          <li>Unlimited real-time signals</li>
+          <li>Full TP1–TP5 + SL levels</li>
+          <li>Spot &amp; Futures signals</li>
+          <li>Cornix bot compatible</li>
+          <li class="no">Market analysis reports</li>
+        </ul>
+        <a href="#payment" class="plan-btn gold">Get Basic — $29/mo</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Premium VIP</div>
+        <div class="plan-price">$79 <span>/month</span></div>
+        <div class="plan-desc">The full arsenal. For traders who want the edge.</div>
+        <ul class="plan-features">
+          <li>Everything in Basic</li>
+          <li>Daily market analysis</li>
+          <li>Priority alerts</li>
+          <li>Direct analyst access</li>
+          <li>Exclusive VIP-only setups</li>
+        </ul>
+        <a href="#payment" class="plan-btn gold">Get VIP — $79/mo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE SIGNAL -->
+<section id="sample">
+  <div class="reveal">
+    <div class="section-tag">Example</div>
+    <h2>What a Signal Looks Like</h2>
+    <p class="subtitle">Every signal is structured, precise, and actionable.</p>
+    <div class="signal-wrap">
+      <div class="signal-card">
+        <div class="sig-header">⚡ CRYPTO ALPHA SIGNAL #047</div>
+        <div>━━━━━━━━━━━━━━━━━━━━━━</div>
+        <div>📌 <span class="sig-label">Pair:</span> <strong>BTC/USDT</strong></div>
+        <div>📊 <span class="sig-label">Market:</span> Futures (Perpetual)</div>
+        <div>📈 <span class="sig-label">Direction:</span> <span class="sig-long">LONG ▲</span></div>
+        <div>⚙️ <span class="sig-label">Leverage:</span> 5x (Isolated)</div>
+        <div>━━━━━━━━━━━━━━━━━━━━━━</div>
+        <div>🎯 <span class="sig-label">Entry Zone:</span> <strong>$96,800 – $97,400</strong></div>
+        <div>━━━━━━━━━━━━━━━━━━━━━━</div>
+        <div class="sig-tp">✅ TP1: $98,200</div>
+        <div class="sig-tp">✅ TP2: $99,500</div>
+        <div class="sig-tp">✅ TP3: $101,000</div>
+        <div class="sig-tp">✅ TP4: $103,500</div>
+        <div class="sig-tp">✅ TP5: $107,000</div>
+        <div>━━━━━━━━━━━━━━━━━━━━━━</div>
+        <div class="sig-sl">🛑 Stop-Loss: $95,200</div>
+        <div>⚠️ <span class="sig-label">Invalidation:</span> Close below $94,800</div>
+        <div>━━━━━━━━━━━━━━━━━━━━━━</div>
+        <div style="color:#888;font-size:0.78rem;">⚠️ Not financial advice. Trade at your own risk.<br>© Crypto Alpha Signal</div>
+      </div>
+      <div class="signal-text">
+        <h3>Every field has a purpose</h3>
+        <p>📌 <strong>Entry Zone</strong> — A bracket, not a single price. Reduces slippage and allows scaled-in accumulation.</p>
+        <p>✅ <strong>TP1–TP5</strong> — Scaled exits. Close 40% at TP1, trail the rest. Locks profit while riding the move.</p>
+        <p>🛑 <strong>Stop-Loss</strong> — Hard exit. Never moved against you. Protects capital above all else.</p>
+        <p>⚠️ <strong>Invalidation</strong> — The structural level that voids the thesis. If price closes below this, the setup is dead regardless of SL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="reveal">
+    <div class="section-tag">Edge</div>
+    <h2>Our Methodology</h2>
+    <p class="subtitle">SMC institutional order flow combined with quantitative indicator confirmation.</p>
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>📦 Order Blocks (OB)</h4>
+        <p>Institutional accumulation/distribution zones. We identify where smart money entered and re-enter at the same levels.</p>
+      </div>
+      <div class="method-card">
+        <h4>🕳️ Fair Value Gaps (FVG)</h4>
+        <p>Liquidity imbalances left by rapid moves. Algorithms pull price back to fill these — we position ahead of the fill.</p>
+      </div>
+      <div class="method-card">
+        <h4>💧 Liquidity Sweeps</h4>
+        <p>Institutions hunt stop-loss clusters before reversing. We identify these sweeps and enter on the reversal, not the sweep.</p>
+      </div>
+      <div class="method-card">
+        <h4>📉 RSI Divergence</h4>
+        <p>Price makes new highs while RSI makes lower highs — momentum exhaustion. One of the most reliable reversal signals.</p>
+      </div>
+      <div class="method-card">
+        <h4>📊 Bollinger Bands</h4>
+        <p>Volatility envelope for breakout and mean-reversion confirmation. Band squeezes precede explosive moves.</p>
+      </div>
+      <div class="method-card">
+        <h4>🔄 BOS / CHoCH</h4>
+        <p>Break of Structure confirms trend continuation. Change of Character signals early reversal — used for precision entries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section id="payment">
+  <div class="reveal">
+    <div class="section-tag">Subscribe</div>
+    <h2>Get Access Now</h2>
+    <p class="subtitle">Crypto-only payments. Instant access after verification.</p>
+    <div class="payment-box">
+      <h3>💳 Payment Instructions</h3>
+      <p style="color:var(--muted);font-size:0.9rem;">Send USDT (ERC-20 or BEP-20) to the wallet below. Then DM us on Telegram with your transaction hash.</p>
+      <div class="wallet-row">
+        <div class="wallet-addr" id="wallet">0x2B5697B7387335d5863B7e2f2F316FCf172b3c98</div>
+        <button class="copy-btn" onclick="copyWallet()">Copy</button>
+      </div>
+      <ol class="payment-steps">
+        <li>Choose your plan: <strong>Basic ($29 USDT)</strong> or <strong>Premium VIP ($79 USDT)</strong></li>
+        <li>Send exact USDT amount to the wallet address above (ERC-20 or BEP-20)</li>
+        <li>Copy your transaction hash (TxHash) from your wallet</li>
+        <li>DM us on Telegram: <strong>@CryptoAlphaSignal</strong> with your TxHash + chosen plan</li>
+        <li>Get added to your private channel within 1 hour ✅</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section id="disclaimer">
+  <div class="reveal">
+    <div class="disclaimer-box">
+      <strong style="color:var(--red);">⚠️ Risk Disclaimer</strong><br><br>
+      Crypto Alpha Signal provides market analysis and trading signals for educational and informational purposes only. Nothing on this platform constitutes financial advice, investment advice, or a solicitation to buy or sell any financial instrument. Cryptocurrency trading involves substantial risk of loss and is not suitable for all investors. Past performance is not indicative of future results. You are solely responsible for your own trading decisions. Never trade with money you cannot afford to lose. Always conduct your own due diligence before entering any trade.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⚡ Crypto Alpha Signal</div>
+  <p>Institutional-Grade Crypto Signals · Telegram · Est. 2024</p>
+  <p style="margin-top:0.5rem;">© 2024 Crypto Alpha Signal · Not financial advice · Trade at your own risk</p>
+</footer>
+
+<script>
+  // Copy wallet address
+  function copyWallet() {
+    const addr = document.getElementById('wallet').textContent;
+    navigator.clipboard.writeText(addr).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      btn.style.background = '#0ecb81';
+      setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = ''; }, 2000);
+    });
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
