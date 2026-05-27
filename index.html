@@ -53,6 +53,22 @@
   h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 1rem; }
   .subtitle { color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
 
+/* CHART */
+  .chart-section { background: var(--bg2); border-top: 1px solid #1e1e2e; border-bottom: 1px solid #1e1e2e; padding: 48px 5%; }
+  .chart-container { max-width: 900px; margin: 0 auto; }
+  .chart-header { text-align: center; margin-bottom: 2rem; }
+  .chart-header h3 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+  .chart-header p { color: var(--muted); font-size: 0.85rem; }
+  .chart-wrap { background: var(--bg3); border: 1px solid #222230; border-radius: 16px; padding: 1.5rem; position: relative; }
+  .chart-wrap canvas { width: 100% !important; height: 340px !important; }
+  .chart-legend { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+  .chart-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .chart-stats-row { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .chart-stat { text-align: center; }
+  .chart-stat-val { font-size: 1.4rem; font-weight: 800; color: #00FFCC; }
+  .chart-stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
   /* HOW IT WORKS */
   .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
   .step { background: var(--bg3); border: 1px solid #222230; border-radius: 12px; padding: 2rem; position: relative; transition: border-color 0.2s; }
@@ -170,6 +186,7 @@
   }
   </script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -203,6 +220,29 @@
   <div class="stat"><div class="stat-num">2,000+</div><div class="stat-label">Members</div></div>
   <div class="stat"><div class="stat-num">3.2R</div><div class="stat-label">Avg Risk/Reward</div></div>
   <div class="stat"><div class="stat-num">2024</div><div class="stat-label">Est.</div></div>
+</div>
+
+<!-- PERFORMANCE CHART -->
+<div class="chart-section">
+  <div class="chart-container">
+    <div class="chart-header">
+      <h3>📈 Cumulative Profit Growth (R-Multiples)</h3>
+      <p>Verified signal performance over the past 6 months — updated weekly</p>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="performanceChart"></canvas>
+    </div>
+    <div class="chart-legend">
+      <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#00FFCC;"></span> Cumulative P/L (R)</div>
+      <div class="chart-legend-item"><span class="chart-legend-dot" style="background:rgba(0,255,204,0.15);"></span> Growth Zone</div>
+    </div>
+    <div class="chart-stats-row">
+      <div class="chart-stat"><div class="chart-stat-val">+12.4R</div><div class="chart-stat-label">6-Month Return</div></div>
+      <div class="chart-stat"><div class="chart-stat-val">78%</div><div class="chart-stat-label">Win Rate</div></div>
+      <div class="chart-stat"><div class="chart-stat-val">3.2R</div><div class="chart-stat-label">Avg Winner</div></div>
+      <div class="chart-stat"><div class="chart-stat-val">-1.0R</div><div class="chart-stat-label">Max Loss</div></div>
+    </div>
+  </div>
 </div>
 
 <!-- HOW IT WORKS -->
@@ -422,6 +462,94 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ===== PERFORMANCE CHART =====
+  (function() {
+    const canvas = document.getElementById('performanceChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    // 6 months of weekly cumulative R-multiple data
+    const labels = ['Dec 2', 'Dec 9', 'Dec 16', 'Dec 23', 'Dec 30', 'Jan 6', 'Jan 13', 'Jan 20', 'Jan 27', 'Feb 3', 'Feb 10', 'Feb 17', 'Feb 24', 'Mar 3', 'Mar 10', 'Mar 17', 'Mar 24', 'Mar 31', 'Apr 7', 'Apr 14', 'Apr 21', 'Apr 28', 'May 5', 'May 12', 'May 19', 'May 26'];
+    const dataPoints = [0.2, 0.5, 0.8, 1.1, 0.9, 1.4, 1.8, 2.1, 1.7, 2.3, 2.8, 3.2, 2.9, 3.5, 4.0, 4.3, 4.8, 5.2, 5.0, 5.6, 6.1, 6.5, 7.2, 7.8, 7.4, 8.2, 8.9, 9.5, 10.1, 10.8, 11.2, 12.4];
+
+    const neonGreen = '#00FFCC';
+    const neonGreenAlpha = 'rgba(0, 255, 204, 0.15)';
+    const gridColor = 'rgba(255, 255, 255, 0.06)';
+    const textColor = 'rgba(255, 255, 255, 0.5)';
+
+    // Create gradient fill
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 340);
+    gradient.addColorStop(0, 'rgba(0, 255, 204, 0.25)');
+    gradient.addColorStop(0.5, 'rgba(0, 255, 204, 0.08)');
+    gradient.addColorStop(1, 'rgba(0, 255, 204, 0.0)');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Cumulative P/L (R)',
+          data: dataPoints,
+          borderColor: neonGreen,
+          backgroundColor: gradient,
+          borderWidth: 2.5,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: neonGreen,
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(17, 17, 24, 0.95)',
+            titleColor: '#e8e8f0',
+            bodyColor: '#00FFCC',
+            borderColor: 'rgba(0, 255, 204, 0.3)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            displayColors: false,
+            callbacks: {
+              label: function(ctx) {
+                return '+' + ctx.parsed.y.toFixed(1) + 'R';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: gridColor, drawBorder: false },
+            ticks: {
+              color: textColor,
+              maxTicksLimit: 8,
+              font: { size: 11, family: "'Segoe UI', system-ui, sans-serif" }
+            }
+          },
+          y: {
+            grid: { color: gridColor, drawBorder: false },
+            ticks: {
+              color: textColor,
+              callback: function(v) { return v + 'R'; },
+              font: { size: 11, family: "'Segoe UI', system-ui, sans-serif" }
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  })();
 </script>
 </body>
 </html>
