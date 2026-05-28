@@ -69,6 +69,18 @@
   .chart-stat-val { font-size: 1.4rem; font-weight: 800; color: #00FFCC; }
   .chart-stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
+  /* FAQ */
+  .faq-grid { display: flex; flex-direction: column; gap: 0.8rem; max-width: 720px; }
+  .faq-item { background: var(--bg3); border: 1px solid #222230; border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+  .faq-item:hover { border-color: rgba(0,255,204,0.3); }
+  .faq-item.open { border-color: #00FFCC; }
+  .faq-q { padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.95rem; color: var(--text); user-select: none; }
+  .faq-q:hover { color: #00FFCC; }
+  .faq-arrow { font-size: 1.1rem; color: var(--muted); transition: transform 0.3s; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); color: #00FFCC; }
+  .faq-a { padding: 0 1.5rem; max-height: 0; overflow: hidden; color: var(--muted); font-size: 0.88rem; line-height: 1.7; transition: all 0.3s ease; }
+  .faq-item.open .faq-a { padding: 0 1.5rem 1.2rem; max-height: 300px; }
+
   /* HOW IT WORKS */
   .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
   .step { background: var(--bg3); border: 1px solid #222230; border-radius: 12px; padding: 2rem; position: relative; transition: border-color 0.2s; }
@@ -187,6 +199,17 @@
   </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  // ===== FAQ TOGGLE =====
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    // Toggle clicked
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
 </head>
 <body>
 
@@ -196,7 +219,9 @@
   <div class="nav-links"><a href="https://discord.gg/RdcKMhKgs">Discord</a>
     <a href="https://x.com/crypto_alpha_p" target="_blank" rel="noopener">𝕏 / Twitter</a>
     <a href="#how-it-works">How It Works</a>
+    <a href="#methodology">Methodology</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
     <a href="#payment">Subscribe</a>
   </div>
   <a href="#pricing" class="nav-cta">Get Access</a>
@@ -394,6 +419,73 @@
       <div class="method-card">
         <h4>🔄 BOS / CHoCH</h4>
         <p>Break of Structure confirms trend continuation. Change of Character signals early reversal — used for precision entries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="reveal">
+    <div class="section-tag">FAQ</div>
+    <h2>Frequently Asked Questions</h2>
+    <p class="subtitle">Everything you need to know before subscribing.</p>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>How are signals generated?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Every signal combines Smart Money Concepts (order blocks, fair value gaps, liquidity sweeps) with quantitative confirmation (RSI, Bollinger Bands, volume analysis). Our AI engine scans 200+ pairs 24/7 and human analysts validate before delivery.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>What's the win rate?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">78% win rate over the past 6 months across 500+ delivered signals. Past performance doesn't guarantee future results — always manage risk.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Which exchanges work?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Binance, Bybit, OKX, KuCoin, and Gate. Any exchange with USDT pairs works. Futures signals require a futures-enabled account.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I automate trades?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Yes. Our signals are Cornix bot compatible. Connect Cornix to your Binance/Bybit API and it auto-executes our signals entry, TP, and SL.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>How fast is delivery?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Premium: instant (under 30 seconds). Free tier: delayed 2–4 hours. We recommend real-time delivery for scalping setups.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Do you manage funds?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Never. We never ask for your funds, private keys, or exchange passwords. We deliver signals only — you execute and control your own capital.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>How does payment work?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">Send USDT (ERC-20 or BEP-20) to our wallet, then DM @Crypto_Alpha_Signal on Telegram with your TxHash. Access granted within 1 hour after on-chain confirmation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I cancel anytime?</span>
+          <span class="faq-arrow">▾</span>
+        </div>
+        <div class="faq-a">No lock-in contracts. Monthly subscription — stop paying, access ends at period end. No questions asked.</div>
       </div>
     </div>
   </div>
